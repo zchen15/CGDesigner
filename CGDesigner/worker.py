@@ -51,11 +51,6 @@ class Worker:
             if os.path.exists(fname)==False:
                 try:
                     logging.info('Fetching '+fname)
-                    '''
-                    for k in self.params['addr']:
-                        y = self.params['addr'][k]
-                        fname = fname.replace(y,k)
-                    '''
                     outname = fname.split('/')[-1]
                     cmd = 'wget '+fname+' -O '+outname
                     subprocess.run(cmd.split(' '))
@@ -74,7 +69,7 @@ class Worker:
                 logging.info('Failed to run '+f)
             try:
                 logging.info('Executing '+f)
-                cmd = 'bash '+fname
+                cmd = 'bash '+f
                 subprocess.run(cmd.split(' '))
             except:
                 logging.info('Failed to execute '+f)
