@@ -17,6 +17,12 @@ from .misc import read_config
 
 class Worker:
     params = {'s3':{}}
+    params = {'addr':{'/':'-',
+                      '.':'-',
+                      '_':'-',
+                      ':':'-',
+                      '#':'-'}}
+
     def __init__(self, args=None):
         self.params = update_parameters(args, self.params)
         # read config if available
@@ -44,6 +50,11 @@ class Worker:
             if os.path.exists(fname)==False:
                 try:
                     logging.info('Fetching '+fname)
+                    '''
+                    for k in self.params['addr']:
+                        y = self.params['addr'][k]
+                        fname = fname.replace(y,k)
+                    '''
                     outname = fname.split('/')[-1]
                     cmd = 'wget '+fname+' -O '+outname
                     subprocess.run(cmd.split(' '))

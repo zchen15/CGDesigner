@@ -8,6 +8,7 @@ import pandas as pd
 import numpy as np
 
 from .fileserver import Fileserver
+from .worker import Worker
 from .misc import get_timestamp
 from .misc import get_hash
 from .misc import update_parameters
@@ -47,6 +48,7 @@ class Kube:
         self.set_credentials()
         self.test_credentials()
         self.server = Fileserver(self.params)
+        self.params = update_parameters(Worker.params, self.params)
         
     def set_credentials(self):
         '''
@@ -249,7 +251,7 @@ class Kube:
         # upload bash script
         self.server.upload_files(infile)
         # make the name
-        jname = Kube.format_name(infile)
+        jname = self.format_name(infile)
         # submit the job
         print('submitting '+jname)
         cmd = 'CGDesigner checkpoint'
@@ -282,7 +284,7 @@ class Kube:
         for batch in files:
             name = batch[0].split('.spec')[0].split('/')[-1]
             name = self.params['s3']['bucket'] + '_' + name
-            jname = Kube.format_name(name)
+            jname = self.format_name(name)
             if jname[-1]=='-':
                 jname = jname[:-1]
             # submit the job
@@ -291,14 +293,14 @@ class Kube:
             print(cmd)
             self.create_job(jname, cmd.split(' '))
 
-    def format_name(name):
+    def format_name(self, name):
         h = get_hash(name)
         jname = h[:10]+'_'+name
-        jname = jname.replace('_','-')
         jname = jname.replace(' ','')
-        jname = jname.replace('.','-')
+        for k in self.params['addr'].keys():
+            y = self.params['addr'][k]
+            jname = jname.replace(k,y)
         jname = jname.lower()
         jname = jname[:63]
         return jname
-
 
