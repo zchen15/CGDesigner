@@ -8,7 +8,6 @@ import pandas as pd
 import numpy as np
 
 from .fileserver import Fileserver
-from .worker import Worker
 from .misc import get_timestamp
 from .misc import get_hash
 from .misc import update_parameters
@@ -48,7 +47,6 @@ class Kube:
         self.set_credentials()
         self.test_credentials()
         self.server = Fileserver(self.params)
-        self.params = update_parameters(Worker.params, self.params)
         
     def set_credentials(self):
         '''
@@ -237,10 +235,8 @@ class Kube:
         spec = [f for f in files[c]]
         bash = files[~c]
         for f in bash:
-            try:
-                self.submit_bash(f)
-            except:
-                print('Failed to submit bash file:',f)
+            self.submit_bash(f)
+        
         if len(spec) > 0:
             self.submit_nupack(spec)
 
@@ -297,9 +293,13 @@ class Kube:
         h = get_hash(name)
         jname = h[:10]+'_'+name
         jname = jname.replace(' ','')
-        for k in self.params['addr'].keys():
-            y = self.params['addr'][k]
-            jname = jname.replace(k,y)
+        tags = {'/':'-',
+                '.':'-',
+                '_':'-',
+                ':':'-',
+                '#':'-'}
+        for k in tags:
+            jname = jname.replace(k,tags[k])
         jname = jname.lower()
         jname = jname[:63]
         return jname

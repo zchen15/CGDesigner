@@ -18,11 +18,6 @@ from .misc import read_config
 class Worker:
     params = {}
     params['s3'] = {}
-    params['addr'] = {'/':'-',
-                      '.':'-',
-                      '_':'-',
-                      ':':'-',
-                      '#':'-'}
 
     def __init__(self, args=None):
         self.params = update_parameters(args, self.params)
