@@ -16,12 +16,13 @@ from .misc import get_memory_usage
 from .misc import read_config
 
 class Worker:
-    params = {'s3':{}}
-    params = {'addr':{'/':'-',
+    params = {}
+    params['s3'] = {}
+    params['addr'] = {'/':'-',
                       '.':'-',
                       '_':'-',
                       ':':'-',
-                      '#':'-'}}
+                      '#':'-'}
 
     def __init__(self, args=None):
         self.params = update_parameters(args, self.params)
