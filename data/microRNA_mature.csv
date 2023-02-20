@@ -1,0 +1,11 @@
+id,filename,Strand,description,Sequence
+NR_031463.1,gga-mir-130b,gga-mir-130b_5p,"Gallus gallus microRNA 130b (mir130B), microRNA",gggcgggctgcc cctctttccctgttgcactact gtcacgg
+NR_031463.1,gga-mir-130b,gga-mir-130b_3p,"Gallus gallus microRNA 130b (mir130B), microRNA",tcgcagcgag cagtgcaataatgaaagggcgt cagt
+NR_031438.1,gga-mir-203a,gga-mir-203a_5p,"Gallus gallus microRNA 203a (mir203A), microRNA",ctcagcctccttggt gcagtggttcttaacagttcaac agttctcta
+NR_031438.1,gga-mir-203a,gga-mir-203a_3p,"Gallus gallus microRNA 203a (mir203A), microRNA",tcataatt gtgaaatgtttaggaccacttg accagcgaggcccgggcatcg
+NR_031397.1,gga-mir-let7b,gga-mir-let7b_5p,"Gallus gallus microRNA let-7b (mirLET7B), microRNA",cagga tgaggtagtaggttgtgtggtt tcagggtagtgatttt
+NR_031397.1,gga-mir-let7b,gga-mir-let7b_3p,"Gallus gallus microRNA let-7b (mirLET7B), microRNA",gccccaatcaggagat aactatacaacctactgccttc cctg
+MI0000392,mmu-mir-294,mmu-mir-294-5p,"Mouse microRNA 294-5p",TTCCATATAGCCATACTCAAAATGGAGGCCCTATCTAAGCTTT
+MI0000392,mmu-mir-294,mmu-mir-294-3p,"Mouse microRNA 294-3p",TAAGTGGAAAGTGCTTCCCTTTTGTGTGTTGCCATGTGGAG
+MI0000442,hsa-mir-122,hsa-mir-122-5p,"Human microRNA 122-5p",CCTTAGCAGAGCTGTGGAGTGTGACAATGGTGTTTGTGTCT
+MI0000442,hsa-mir-122,hsa-mir-122-3p,"Human microRNA 122-3p",AAACTATCAAACGCCATTATCACACTAAATAGCTACTGCTAGGC

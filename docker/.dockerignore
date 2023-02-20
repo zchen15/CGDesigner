@@ -1,0 +1,4 @@
+Dockerfile
+bop_submit.py
+*.o
+*.swp

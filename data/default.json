@@ -1,0 +1,28 @@
+{
+  "k8":{
+     "api_key": "kubeconfig-u-mykey",
+     "api_key_prefix": "mykey",
+     "host": "https://my.clusters.net",
+     "container_image": "https://my.clusters.net/repos/mycontainer",
+     "container_name": "mycontainer",
+     "namespace": "mynamespace",
+     "regcred": "mycred",
+     "cpu": [
+       "5000m",
+       "5000m"]
+     ,
+     "memory": [
+       "16G",
+       "16G"
+     ]
+  },
+  "trials":4,
+  "ckpt_int":600,
+  "max_opt":172800,
+  "s3": {
+    "bucket": "zchen",
+    "endpoint_url": "https://my.clusters.net",
+    "aws_access_key_id": "mykeyid",
+    "aws_secret_access_key": "mykey"
+  }
+}

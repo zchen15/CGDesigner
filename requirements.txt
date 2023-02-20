@@ -1,0 +1,10 @@
+biopython
+matplotlib
+numpy
+pandas
+biopython
+matplotlib
+nupack
+kubernetes
+botocore
+boto3
