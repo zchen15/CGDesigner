@@ -51,3 +51,8 @@ CGDesigner oligos -noterm -m twist_outer -g "tatatagGGTCTCcCACA " " CTTTgGAGACCc
 
 # mRNA scanner
 CGDesigner analysis -material rna -m off_target_analysis -i ../data/PAX7.csv -r ../data/mRNA.csv -o mscan.csv -d 10 10 10 100 20
+CGDesigner analysis -m off_target_score -i mscan.csv -o mscan_score.csv
+
+# mRNA scanner for ts45 cgRNA
+CGDesigner analysis -material rna -m off_target_analysis -i ../data/ts45.csv -r ../data/mRNA.csv -o mscan_ts45.csv -d 0 200 200 100 20 -s "*g1*0*"
+CGDesigner analysis -m off_target_score -i mscan.csv -o mscan_score_ts45.csv
