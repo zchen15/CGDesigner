@@ -45,15 +45,9 @@ CGDesigner analysis -i strands.csv -o strands.csv -m get_n_best -d 100 -20 -r 'd
 echo 'filter for best 20 designs based on external predictor'
 CGDesigner analysis -material rna -i strands.csv -o strands.csv -m get_n_best -d 16 -20 -r 'prediction'
 
-
-# generate bar plot of off and on target mRNAs
-
-
-
 # generate oligos from filtered designs
 echo 'generating oligos for the designs'
 CGDesigner oligos -noterm -m twist_outer -g "tatatagGGTCTCcCACA " " CTTTgGAGACCctatata" -s "*g1*0*" -pad 300 -i strands.csv -o oligos.csv
 
-# generate plasmid maps
-
-
+# mRNA scanner
+CGDesigner analysis -material rna -m off_target_analysis -i ../data/PAX7.csv -r ../data/mRNA.csv -o mscan.csv -d 10 10 10 100 20

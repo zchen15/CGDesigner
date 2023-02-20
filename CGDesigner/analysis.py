@@ -420,6 +420,12 @@ class Analysis:
     def off_target_analysis(self, df):
         '''
         Run off target tube analysis against mRNA window
+        dim = [A, B, s1, L2, s2]
+        A = toehold length
+        B = hairpin length
+        s1 = stride of query
+        s2 = stride of reference
+        L2 = length of reference
         '''
         ref = read_csv(self.params['reference'])
         A, B, s1, L2, s2 = self.params['dim']
