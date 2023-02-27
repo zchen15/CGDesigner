@@ -1,5 +1,3 @@
-biopython
-matplotlib
 numpy
 pandas
 biopython
