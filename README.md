@@ -162,7 +162,7 @@ CGDesigner analysis -material rna -i strands.csv -o strands.csv -m get_n_best -d
 ```
 
 ### Oligo generation
-The following shows how to generate oligos with BsaI golden gate sites padded to 300nt. The output can be upload to Twist or IDT to obtain gene block or oligo pool order POs.
+The following shows how to generate oligos with BsaI golden gate sites padded to 300nt. The output can be uploaded to Twist or IDT to obtain gene block or oligo pool order POs.
 
 ```
 echo 'generating oligos for the designs'
@@ -193,3 +193,4 @@ If you experience any issues with the code, please post them on the issues secti
 If you use `CGDesigner` in a publication, please cite:
 
 Hanewich-Hollatz MH, Chen Z, Hochrein LM, Huang J, Pierce NA. Conditional Guide RNAs: Programmable Conditional Regulation of CRISPR/Cas Function in Bacterial and Mammalian Cells via Dynamic RNA Nanotechnology. ACS Cent Sci. 2019 Jul 24;5(7):1241-1249. doi: [10.1021/acscentsci.9b00340](https://doi.org/10.1021/acscentsci.9b00340).
+
