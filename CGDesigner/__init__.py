@@ -10,7 +10,7 @@ from .analysis import Analysis
 from .oligos import Oligos
 from .misc import *
 
-__version__ = "0.1.0"
+__version__ = "2023.03.01"
 __author__ = "Zhewei Chen"
-__email__ = "zchen@caltech.edu"
+__email__ = "zchen15@github.com"
 __name__ = 'CGDesigner'
