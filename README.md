@@ -116,18 +116,60 @@ The following shows how to download results from the s3 file server using the `f
 CGDesigner ftp -h
 
 # get list of ts45 results
-CGDesigner -c ../data/npbop.json ftp -ls 'ts45*.csv'
+CGDesigner -c data/npbop.json ftp -ls 'ts45*.csv'
 
 # Download ts45 results
-CGDesigner -c ../data/npbop.json ftp -get '*'
+CGDesigner -c data/npbop.json ftp -get 'ts45*.csv'
+
+# Remove ts45 results
+CGDesigner -c data/npbop.json ftp -rm 'ts45*.csv'
 ```
 
 ### Filtering designs
-The following 
+The following example shows how to filter and analyze cgRNA sequences with the `analysis` submodule.
+```
+# download results and filter by prediction
+CGDesigner -c ../data/npbop.json ftp -get 'ts45_mRNA_1*.csv'
+# note -noterm strips the terminator sequence
+CGDesigner analysis -i ts45_mRNA_0*.csv -o strands.csv -m remove_homopolymers  -noterm
 
+# select designs targeting the last 400 bp of the PAX7 gene
+# -s selects for Strands with keyword '*t1*'
+CGDesigner analysis -i strands.csv -o strands.csv -m add_position -r ../data/PAX7_400.csv -s '*t1*'
+CGDesigner analysis -i strands.csv -o strands.csv -m add_position -r ../data/PAX7.csv -s '*t1*'
+
+# filter by test tube specifications to make sure they still work
+echo 'running test tube analysis on designs'
+CGDesigner -v analysis -material rna -i strands.csv -o strands.csv -m filter_ts45 -r ../data/PAX7.csv
+
+# filter for best 100 designs based on external prediction score
+echo 'filtering by external predictor'
+CGDesigner analysis -i strands.csv -o strands.csv -m add_prediction -r ../data/prediction.csv
+CGDesigner analysis -i strands.csv -o strands.csv -m get_n_best -d 100 -30 -r 'prediction'
+
+# filter for best 100 designs based on design defect
+echo 'filtering by design defect'
+CGDesigner analysis -i strands.csv -o strands.csv -m parse_defect
+CGDesigner analysis -i strands.csv -o strands.csv -m get_n_best -d 100 -20 -r 'defect'
+
+# get the 20 best designs based on external prediction score
+echo 'filter for best 20 designs based on external predictor'
+CGDesigner analysis -material rna -i strands.csv -o strands.csv -m get_n_best -d 16 -20 -r 'prediction'
+```
+
+### Oligo generation
+The following shows how to generate oligos with BsaI golden gate sites padded to 300nt. The output can be upload to Twist or IDT to obtain gene block or oligo pool order POs.
+```
+# output is written to oligos.csv
+# -g is used to add golden gate sites or flanking sequences
+# -pad defining the padding length. Here all strands are made to be at least 300nt
+echo 'generating oligos for the designs'
+CGDesigner oligos -noterm -m twist_outer -g "tatatagGGTCTCcCACA " " CTTTgGAGACCctatata" -s "*g1*0*" -pad 300 -i strands.csv -o oligos.csv
+```
 
 ### Rebuilding the docker container
 The docker contain can be rebuild and added to the kubernetes cluster by running `bash docker_build.sh`. This will update the container with new code you added to this directory.
+
 
 ## Issues
 If you experience any issues with the code, please post them on the issues section along with the log file. I will monitor this periodically and try to fix issues as they arise.
