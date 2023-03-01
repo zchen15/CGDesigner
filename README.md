@@ -19,6 +19,7 @@
 This package requires `nupack` to be installed on the server. This package can be found at [nupack.org](https://nupack.org/download/overview).
 
 Run the following commands to clone and install this tool.
+
 ```
 git clone https://github.com/zchen15/CGDesigner
 cd CGDesigner
@@ -44,6 +45,7 @@ CGDesigner design -material rna -s reverse_toehold_switch -gin data/mtrig.csv -o
 # Generate terminator switch cgRNAs targeting trigger sequences in mtrig.csv
 CGDesigner design -material rna -s terminator_switch -gin data/mtrig.csv -o ts32_mtrig -d 10 20 6 0 7 3 1 -fstop 0.01 -scan 100 100
 ```
+
 `-o` defines the output file prefix
 
 `-scan` generates designs targeting 50nt sequences at stride 10nt for the sequences in mtrig.csv
@@ -111,6 +113,7 @@ CGDesigner -c data/npbop.json kube -clear -pods
 
 ### Download finished results from the s3 file server
 The following shows how to download results from the s3 file server using the `ftp` submodule.
+
 ```
 # get help on this submodule
 CGDesigner ftp -h
@@ -127,6 +130,7 @@ CGDesigner -c data/npbop.json ftp -rm 'ts45*.csv'
 
 ### Filtering designs
 The following example shows how to filter and analyze cgRNA sequences with the `analysis` submodule.
+
 ```
 # download results and filter by prediction
 CGDesigner -c ../data/npbop.json ftp -get 'ts45_mRNA_1*.csv'
@@ -159,10 +163,12 @@ CGDesigner analysis -material rna -i strands.csv -o strands.csv -m get_n_best -d
 
 ### Oligo generation
 The following shows how to generate oligos with BsaI golden gate sites padded to 300nt. The output can be upload to Twist or IDT to obtain gene block or oligo pool order POs.
+
 ```
 # output is written to oligos.csv
 # -g is used to add golden gate sites or flanking sequences
 # -pad defining the padding length. Here all strands are made to be at least 300nt
+# -noterm strips the terminator sequences
 echo 'generating oligos for the designs'
 CGDesigner oligos -noterm -m twist_outer -g "tatatagGGTCTCcCACA " " CTTTgGAGACCctatata" -s "*g1*0*" -pad 300 -i strands.csv -o oligos.csv
 ```
