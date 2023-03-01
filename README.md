@@ -184,7 +184,7 @@ CGDesigner analysis -m off_target_score -i mscan.csv -o mscan_score.csv
 ```
 
 ### Rebuilding the docker container
-The docker contain can be rebuild and added to the kubernetes cluster by running `bash docker_build.sh`. This will update the container with new code you added to this directory.
+The docker container can be rebuilt and added to the kubernetes cluster by running `bash docker_build.sh`. This will update the container with new code you added to this directory.
 
 ## Issues
 If you experience any issues with the code, please post them on the issues section along with the log file. I will monitor this periodically and try to fix issues as they arise.
