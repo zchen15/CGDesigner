@@ -1,5 +1,4 @@
 # CGDesigner
-
 `CGDesigner` is a python based tool for designing and analyzing conditional guide RNAs with NUPACK. This library and python executable is organized into the following submodules:
 
 `design` contains the commands to generate nupack design specifications which are used as input in the checkpoint module
@@ -27,7 +26,7 @@ pip3 install .
 ```
 
 ## Usage 
-The `tests/` directorry contains many example scripts for generating conditional guide RNA. The following are a few useful excerpts.
+The `tests/` directory contains many example scripts for generating conditional guide RNAs. The following are a few useful excerpts to help you start off.
 
 ### Generating NUPACK designs
 `design` is used to generate nupack design specifications which can be run locally or on the kubernetes cluster. The following are a few examples designs specifications that can be generated.
@@ -36,65 +35,102 @@ The `tests/` directorry contains many example scripts for generating conditional
 # Get help on design options
 CGDesigner design -h
 
-# Generate N orthogonal universal trigger RNAs
+# Generate 4 orthogonal universal trigger RNAs of length 20nt
 CGDesigner design -material rna -s rna_trig -N 4 -o rnatrig -d 20 -fstop 0.01
 
 # Generate reverse toehold switch cgRNAs targeting trigger sequences in mtrig.csv
 CGDesigner design -material rna -s reverse_toehold_switch -gin data/mtrig.csv -o ts45_mtrig -d 10 20 10 3 10 3 3 6 -fstop 0.01 -scan 50 10
 
 # Generate terminator switch cgRNAs targeting trigger sequences in mtrig.csv
-CGDesigner design -material rna -s terminator_switch -gin ../data/mtrig.csv -o ts32_mtrig -d 10 20 6 0 7 3 1 -fstop 0.01 -scan 100 100
+CGDesigner design -material rna -s terminator_switch -gin data/mtrig.csv -o ts32_mtrig -d 10 20 6 0 7 3 1 -fstop 0.01 -scan 100 100
 ```
+`-o` defines the output file prefix
 
 `-scan` generates designs targeting 50nt sequences at stride 10nt for the sequences in mtrig.csv
+
 `-d` defines the domain dimensions to use which vary from design to design
+
 `-gin` defines the trigger RNA input to design against, if none are provided then trigger sequenes are considered unconstrained
+
 `-fstop` defines the threshold ensemble defect to reach for design to stop
+
 `-material` defines the thermodynamic model to use
 
-Details about these designs can be found in [my thesis](https://github.com/zchen15/CaltechThesis/raw/main/revisions/Thesis_20230225ZC.pdf). New design formulas can be added to `CGDesigner/formula.py`
+`-s` defines the test_tube formula to use. These are functions listed in `formula.py`
+
+Details about these designs can be found in [my thesis](https://github.com/zchen15/CaltechThesis/raw/main/revisions/Thesis_20230225ZC.pdf). New design formulas can be added to `CGDesigner/formula.py` and called natively from CGDesigner via `-s`.
 
 ### Running jobs locally
 Design jobs can be run locally by providing design `.spec` files as input. These are equivalent to design checkpoints that can be restarted anytime a job fails.
 
 ```
-CGDesigner checkpoint -i *.spec -trials 4 -cint 30 
+# Get help on this submodule
+CGDesigner checkpoint -h
+
+# Runs designs with trials = 4 and checkpoint interval = 30
+CGDesigner -c data/npbop.json checkpoint -i *.spec -trials 4 -cint 30 
 ```
 
 `-trials` defines number of jobs to running in parallel
+
 `-cint` defines the checkpoint interval in seconds
 
+`-c` defines the path to the config file which has other default run parameters
+
 ### Submitting jobs to the cluster
-Design jobs can be submitted to the kubernetes cluster using the following. Make sure you are using the same version of NUPACK as that installed on the cluster otherwise the design `.spec` files will fail to load.
+The following example shows how design jobs can be submitted to the kubernetes cluster using the `kube` submodule. Make sure you are using the same version of NUPACK as that installed on the cluster otherwise the design `.spec` files will fail to load. This submodule can also be used to submit and run bash scripts to the docker container.
 
 ```
+# get help on this submodule
+CGDesigner kube -h
+
 # submits design jobs to the cluster
-CGDesigner -c ../data/npbop.json kube -i *.spec
+CGDesigner -c data/npbop.json kube -i *.spec
+
+# submits bash script to run on the cluster
+CGDesigner -c data/npbop.json kube -i test.sh
 
 # lists current running jobs
-CGDesigner -c ../data/npbop.json kube -ls '*'
+CGDesigner -c data/npbop.json kube -ls '*'
 
 # lists current running pods
-CGDesigner -c ../data/npbop.json kube -ls '*' -pods
+CGDesigner -c data/npbop.json kube -ls '*' -pods
 
 # removes jobs matching keyword ts45*
-CGDesigner -c ../data/npbop.json kube -rm 'ts45*'
+CGDesigner -c data/npbop.json kube -rm 'ts45*'
 
 # removes pods matching keyword ts45*
-CGDesigner -c ../data/npbop.json kube -i *.spec -pods
+CGDesigner -c data/npbop.json kube -i *.spec -pods
 
 # clears completed or failed pods and jobs
-CGDesigner -c ../data/npbop.json kube -clear
-CGDesigner -c ../data/npbop.json kube -clear -pods
+CGDesigner -c data/npbop.json kube -clear
+CGDesigner -c data/npbop.json kube -clear -pods
 ```
 
 `-c` defines the path to the config file. This files contains information about s3 and kubernetes cluster credentials.
 
+### Download finished results from the s3 file server
+The following shows how to download results from the s3 file server using the `ftp` submodule.
+```
+# get help on this submodule
+CGDesigner ftp -h
+
+# get list of ts45 results
+CGDesigner -c ../data/npbop.json ftp -ls 'ts45*.csv'
+
+# Download ts45 results
+CGDesigner -c ../data/npbop.json ftp -get '*'
+```
+
 ### Filtering designs
+The following 
 
 
 ### Rebuilding the docker container
 The docker contain can be rebuild and added to the kubernetes cluster by running `bash docker_build.sh`. This will update the container with new code you added to this directory.
+
+## Issues
+If you experience any issues with the code, please post them on the issues section along with the log file. I will monitor this periodically and try to fix issues as they arise.
 
 ## References
 If you use `CGDesigner` in a publication, please cite:
