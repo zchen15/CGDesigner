@@ -1,5 +1,5 @@
 # CGDesigner
-`CGDesigner` is a python based tool for designing and analyzing conditional guide RNAs with NUPACK. This library and python executable is organized into the following submodules:
+`CGDesigner` is a python based tool for designing and analyzing conditional guide RNAs with NUPACK. Details about this work can be found in [my thesis](https://github.com/zchen15/CaltechThesis/raw/main/revisions/Thesis_20230225ZC.pdf). This library and python executable is organized into the following submodules:
 
 `design` contains the commands to generate nupack design specifications which are used as input in the checkpoint module
 
