@@ -129,7 +129,7 @@ CGDesigner -c data/npbop.json ftp -rm 'ts45*.csv'
 ```
 
 ### Filtering designs
-The following example shows how to filter and analyze cgRNA sequences with the `analysis` submodule.
+The following example shows how to filter and analyze cgRNA sequences with the `analysis` submodule. These operations are run locally, but can be submitted to the cluster as a bash script.
 
 ```
 # download results and filter by prediction
@@ -165,17 +165,26 @@ CGDesigner analysis -material rna -i strands.csv -o strands.csv -m get_n_best -d
 The following shows how to generate oligos with BsaI golden gate sites padded to 300nt. The output can be upload to Twist or IDT to obtain gene block or oligo pool order POs.
 
 ```
-# output is written to oligos.csv
-# -g is used to add golden gate sites or flanking sequences
-# -pad defining the padding length. Here all strands are made to be at least 300nt
-# -noterm strips the terminator sequences
 echo 'generating oligos for the designs'
 CGDesigner oligos -noterm -m twist_outer -g "tatatagGGTCTCcCACA " " CTTTgGAGACCctatata" -s "*g1*0*" -pad 300 -i strands.csv -o oligos.csv
 ```
 
+`-o` defines output filename. Here it is written to oligos.csv
+
+`-g` defines the golden gate sites or flanking sequences
+
+`-pad` defines the padding length. Here all strands are made to be at least 300nt
+
+### mRNA scanner
+This following shows how to perform test tube analysis on cgRNA sequences or sub-sequences of mRNAs to characterize off-target effects via thermodynamics. Here is pax7 sequences are provided on input and divided up as a hairpin of 10nt toehold, 10nt stem at a stride of 10nt. These are analyzed against PAX7 sequences cut up into 100nt sequences with a stride of 20nt. `off_target_analysis` is used to perform test tube analysis. `off_target_score` sums up the concentrations along their respective strand labels in PAX7.csv. This is used to generate bar graphs of off-targetedness.
+
+```
+CGDesigner analysis -material rna -m off_target_analysis -i data/PAX7.csv -r data/mRNA.csv -o mscan.csv -d 10 10 10 100 20
+CGDesigner analysis -m off_target_score -i mscan.csv -o mscan_score.csv
+```
+
 ### Rebuilding the docker container
 The docker contain can be rebuild and added to the kubernetes cluster by running `bash docker_build.sh`. This will update the container with new code you added to this directory.
-
 
 ## Issues
 If you experience any issues with the code, please post them on the issues section along with the log file. I will monitor this periodically and try to fix issues as they arise.
@@ -184,4 +193,3 @@ If you experience any issues with the code, please post them on the issues secti
 If you use `CGDesigner` in a publication, please cite:
 
 Hanewich-Hollatz MH, Chen Z, Hochrein LM, Huang J, Pierce NA. Conditional Guide RNAs: Programmable Conditional Regulation of CRISPR/Cas Function in Bacterial and Mammalian Cells via Dynamic RNA Nanotechnology. ACS Cent Sci. 2019 Jul 24;5(7):1241-1249. doi: [10.1021/acscentsci.9b00340](https://doi.org/10.1021/acscentsci.9b00340).
-
