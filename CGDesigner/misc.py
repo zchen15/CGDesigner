@@ -80,7 +80,9 @@ def read_csv(fname):
     Reads csv and removes spaces from sequence
     '''
     try:
-        if type(fname) == str:
+        if type(fname) == str and '.fa' in fname:
+            return read_fasta(fname)
+        elif type(fname) == str:
             logging.info('Reading '+fname)
             df = pd.read_csv(fname)
             df['Sequence'] = [i.replace(' ','') for i in df['Sequence']]
@@ -98,6 +100,20 @@ def read_csv(fname):
         logging.info('Failed to read '+str(fname))
         return []
 
+def read_fasta(infile):
+    '''
+    Read a fasta file and returns a pandas dataframe
+    infile = file to read
+    return pandas dataframe
+    '''
+    with open(infile, 'r') as f:
+        text = f.read()
+    df = [[name, seq]for name, seq in text.split('\n').split('>')]
+    print(df) # debug
+    df = pd.DataFrame(df, columns=['Strand','Sequence'])
+    df['filename'] = infile
+    return df
+    
 def parse_results(infiles, outfile, data):
     '''
     Extract info from nupack output

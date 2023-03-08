@@ -1,8 +1,11 @@
 numpy
 pandas
 biopython
+scikit-learn
+pyspoa
+mappy
+parasail
 matplotlib
-nupack
 kubernetes
 botocore
 boto3
