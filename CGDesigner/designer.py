@@ -197,9 +197,9 @@ class Designer:
             self.gRNA_in = []
             self.get_constraints()
             d = nupack.tube_design(self.tubes, soft_constraints=self.soft, hard_constraints=self.hard, options=self.options, model=self.model)
-            name = outname
-            logging.info('Adding job '+name)
-            designs.append([name, d])
+            fname = outname+'.spec'
+            logging.info('exporting design to '+fname)
+            d.save(fname)
 
         # run multiple designs
         for i in range(len(df)):
@@ -209,13 +209,8 @@ class Designer:
             self.get_constraints()
             # generate new designs
             d = nupack.tube_design(self.tubes, soft_constraints=self.soft, hard_constraints=self.hard, options=self.options, model=self.model)
-            name = outname+'_'+seqname
-            logging.info('Adding job '+name)
-            designs.append([name, d])
-
-        # export the designs
-        for n, d in designs:
-            fname = n+'.spec'
+            fname = outname+'_'+seqname+'.spec'
             logging.info('exporting design to '+fname)
             d.save(fname)
+
 
