@@ -79,16 +79,8 @@ def read_csv(fname):
     '''
     Reads csv and removes spaces from sequence
     '''
-    try:
-        if type(fname) == str and '.fa' in fname:
-            return read_fasta(fname)
-        elif type(fname) == str:
-            logging.info('Reading '+fname)
-            df = pd.read_csv(fname)
-            df['Sequence'] = [i.replace(' ','') for i in df['Sequence']]
-            return df
-        
-        elif type(fname) == list:
+    try: 
+        if type(fname) == list:
             out = []
             for f in fname:
                 x = read_csv(f)
@@ -97,21 +89,40 @@ def read_csv(fname):
                 out.append(x)
             return pd.concat(out)
     except:
-        logging.info('Failed to read '+str(fname))
-        return []
+        logging.info('Failed to parse '+str(fname))
 
+    logging.info('Reading '+fname)
+    if type(fname) == str:
+        try:
+            df = pd.read_csv(fname)
+            df['Sequence'] = [i.replace(' ','') for i in df['Sequence']]
+            return df
+        except:
+            logging.info('Failed to read '+fname+' as csv')
+        
+        try:            
+            return read_fasta(fname)
+        except:
+            logging.info('Failed to read '+fname+' as fasta') 
+    return []
+    
 def read_fasta(infile):
     '''
     Read a fasta file and returns a pandas dataframe
     infile = file to read
     return pandas dataframe
     '''
+    # read file
     with open(infile, 'r') as f:
         text = f.read()
-    df = [[name, seq]for name, seq in text.split('\n').split('>')]
-    print(df) # debug
-    df = pd.DataFrame(df, columns=['Strand','Sequence'])
-    df['filename'] = infile
+    # format into csv
+    out = []
+    for x in text.split('>'):
+        x = x.split('\n')
+        name = x[0].replace(':','_')
+        seq = ''.join(x[1:])
+        out.append([name, seq])
+    df = pd.DataFrame(out, columns=['Strand','Sequence'])
     return df
     
 def parse_results(infiles, outfile, data):
